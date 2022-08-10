@@ -6,7 +6,7 @@ create a new dashboard that enables the user to manage the movies and other admi
    - cd nodejs-crud-api
    - npm install
    - npm start || npm run dev
-    ## test it using postman
+  ## test it using postman
 
    ## Features
     - CRUD operation for only creator
