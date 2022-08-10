@@ -1,12 +1,13 @@
 # StorexWeb-task
 create a new dashboard that enables the user to manage the movies and other admins.
- 
+ ## testing
+  - use postman
+
   ## How to setup
    - git clone https://github.com/sagar608/nodejs-crud-api.git
    - cd nodejs-crud-api
    - npm install
    - npm start || npm run dev
-  ## test it using postman
 
    ## Features
     - CRUD operation for only creator
