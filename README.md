@@ -5,7 +5,6 @@ create a new dashboard that enables the user to manage the movies and other admi
 
   ## How to setup
    - git clone https://github.com/AhmedAbdelerhman/StorexWeb-task
-   - cd nodejs-crud-api
    - npm install
    - npm start || npm run dev
 
