@@ -23,7 +23,7 @@ exports.createMovie = async (req, res) => {
         title,
         description,
         rate,
-        image: req.file.path.replace("\\", "/"),
+        image: `http://${req.headers.host}/${req.file.path.replace("\\", "/")}`,
 
         movieCategoryName: movieCategory,
         movieUser: req.user._id,
