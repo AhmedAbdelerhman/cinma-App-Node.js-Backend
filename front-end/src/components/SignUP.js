@@ -20,13 +20,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CircularProgress, styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import httpPost from "../Functions/httpPostForm";
-import { ChatState } from "../store/ChatProvider";
 
 const SignUP = (props) => {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [isUploadPicture, setUploadPicture] = useState(false);
-  const [value, setValue] = useState("")
 
   const [pic, setPic] = useState(null);
   const refEmailSignUp = useRef();

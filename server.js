@@ -39,7 +39,7 @@ const upload = multer({ storage: storage });
 
 app.use("/api/user", userRouter);
 
-app.use("/api/movie", upload.single("file"), movieRouter);
+app.use("/api/movie", upload.single("image"), movieRouter);
 app.use("/images", express.static(path.join(__dirname, "images\\")));
 
 app.use("/api/category", categoryRoutes);

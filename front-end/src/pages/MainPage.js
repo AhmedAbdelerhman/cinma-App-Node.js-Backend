@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 const ChatPage = (props) => {
-  const [SearchedValue, setSearchedValue] = useState("");
+  const [InitValue, setInitValue] = useState("search=&rate=&category=");
+  const [ searchedValue, setSearchedValue]=useState('')
+  const [ RateValue, setRateValue]=useState('')
+  const [ CategoryValue, setCategoryValue]=useState('')
+  const [ movies, setMovies]=useState([])
   const user = JSON.parse(localStorage.getItem("userInfo"))
     ? JSON.parse(localStorage.getItem("userInfo"))
     : { userData: "" };
@@ -14,28 +18,35 @@ const ChatPage = (props) => {
 
   const searchHandler = (event) => {
     console.log(event.target.value);
-    setSearchedValue(`search=${event.target.value}`);
+    setInitValue(`search=${event.target.value}&rate=${RateValue}&category=${CategoryValue}`);
+    setSearchedValue(event.target.value)
   };
   const ratingHandler = (event) => {
     console.log(event.target.value);
-    setSearchedValue(`rate=${event.target.value}`);
+    setInitValue(`search=${searchedValue}&rate=${event.target.value}&category=${CategoryValue}`);
+    setRateValue(event.target.value)
+
   };
 
   const categoryHandler = (event) => {
-    setSearchedValue(`category=${event.target.value}`);
+    setInitValue(`search=${searchedValue}&rate=${RateValue}&category=${event.target.value}`);
+    setCategoryValue(event.target.value)
+
     console.log(event.target.value)
   };
 
   useEffect(() => {
     const searchHandler = async () => {
+      console.log(InitValue)
       const response = await fetch(
-        `http://localhost:8080/api/movie?${SearchedValue}`,
+        `http://localhost:8080/api/movie?${InitValue}`,
         config
       );
       try {
         const users = await response.json();
 
         // setSearchedUsers(users);
+        setMovies(users)
         console.log(users);
         //    setisLoading(false);
       } catch (error) {
@@ -43,7 +54,7 @@ const ChatPage = (props) => {
       }
     };
     searchHandler();
-  }, [SearchedValue]);
+  }, [InitValue]);
   return (
     <div className="container mt-5">
       <div class="row">
@@ -170,7 +181,7 @@ const ChatPage = (props) => {
         </div>
 
         <div class="col-md-9 row">
-          <div class="col-md-4">
+       {  movies.map() <div class="col-md-4">
             <div class="card">
               <img src="..." class="card-img-top" alt="..." />
               <div class="card-body">
@@ -184,55 +195,8 @@ const ChatPage = (props) => {
                 <div> created by : ahmed</div>
               </div>
             </div>
-          </div>
+          </div>}
 
-          <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">
-                  Go somewhere
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">
-                  Go somewhere
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <a href="#" class="btn btn-primary">
-                  Go somewhere
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

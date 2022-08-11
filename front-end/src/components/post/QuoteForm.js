@@ -14,12 +14,6 @@ const QuoteForm = (props) => {
   const [file, setFile] = useState();
   const [formShow, setFormShow] = useState(false);
 
-  // const send = event => {
-
-  //   // Axios.post("https://httpbin.org/anything", data)
-  //   //   .then(res => console.log(res))
-  //   //   .catch(err => console.log(err));
-  // };
 
   const user = JSON.parse(localStorage.getItem("userInfo"))
     ? JSON.parse(localStorage.getItem("userInfo"))
