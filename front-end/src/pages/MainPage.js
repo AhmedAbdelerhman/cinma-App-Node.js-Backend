@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 const ChatPage = (props) => {
   const [InitValue, setInitValue] = useState("search=&rate=&category=");
-  const [ searchedValue, setSearchedValue]=useState('')
-  const [ RateValue, setRateValue]=useState('')
-  const [ CategoryValue, setCategoryValue]=useState('')
-  const [ movies, setMovies]=useState([])
+  const [searchedValue, setSearchedValue] = useState("");
+  const [RateValue, setRateValue] = useState("");
+  const [CategoryValue, setCategoryValue] = useState("");
+  const [movies, setMoviesObj] = useState({});
+  const [categories, setCategories] = useState({});
   const user = JSON.parse(localStorage.getItem("userInfo"))
     ? JSON.parse(localStorage.getItem("userInfo"))
     : { userData: "" };
@@ -17,43 +18,52 @@ const ChatPage = (props) => {
   };
 
   const searchHandler = (event) => {
-    console.log(event.target.value);
-    setInitValue(`search=${event.target.value}&rate=${RateValue}&category=${CategoryValue}`);
-    setSearchedValue(event.target.value)
+    setInitValue(
+      `search=${event.target.value}&rate=${RateValue}&category=${CategoryValue}`
+    );
+    setSearchedValue(event.target.value);
   };
   const ratingHandler = (event) => {
-    console.log(event.target.value);
-    setInitValue(`search=${searchedValue}&rate=${event.target.value}&category=${CategoryValue}`);
-    setRateValue(event.target.value)
-
+    setInitValue(
+      `search=${searchedValue}&rate=${event.target.value}&category=${CategoryValue}`
+    );
+    setRateValue(event.target.value);
   };
 
   const categoryHandler = (event) => {
-    setInitValue(`search=${searchedValue}&rate=${RateValue}&category=${event.target.value}`);
-    setCategoryValue(event.target.value)
+    setInitValue(
+      `search=${searchedValue}&rate=${RateValue}&category=${event.target.value}`
+    );
+    setCategoryValue(event.target.value);
 
-    console.log(event.target.value)
   };
 
   useEffect(() => {
-    const searchHandler = async () => {
-      console.log(InitValue)
+    const getMovies = async () => {
       const response = await fetch(
         `http://localhost:8080/api/movie?${InitValue}`,
         config
       );
       try {
-        const users = await response.json();
+        const movies = await response.json();
 
-        // setSearchedUsers(users);
-        setMovies(users)
-        console.log(users);
-        //    setisLoading(false);
-      } catch (error) {
-        //   setisLoading(false);
-      }
+        setMoviesObj(movies);
+      } catch (error) {}
     };
-    searchHandler();
+
+    const getCategoriesHandler = async () => {
+      const response = await fetch(
+        `http://localhost:8080/api/category`,
+        config
+      );
+      try {
+        const categories = await response.json();
+
+        setCategories(categories);
+      } catch (error) {}
+    };
+    getCategoriesHandler();
+    getMovies();
   }, [InitValue]);
   return (
     <div className="container mt-5">
@@ -160,43 +170,50 @@ const ChatPage = (props) => {
 
           <form onChange={categoryHandler}>
             <ul class="list-group">
-            <h2>category</h2>
+              <h2>category</h2>
 
-            <select
-                multiple
-              >
-                <option className="list-group-item" value="happy ">One</option>
-                <option className="list-group-item" value="2">Two</option>
-                <option className="list-group-item" value="3">Three</option>
-                <option className="list-group-item" value="3">Three</option>
-                <option className="list-group-item" value="3">Three</option>
-                <option className="list-group-item" value="3">Three</option>
-                <option className="list-group-item" value="3">Three</option>
-                <option className="list-group-item" value="3">Three</option>
-
+              <select multiple>
+                <option className="list-group-item" value="">
+                  default
+                </option>
+                {categories.categories?.map((category) => {
+                  return (
+                    <option
+                      className="list-group-item"
+                      key={category._id}
+                      value={category.title}
+                    >
+                      {category.title}
+                    </option>
+                  );
+                })}
               </select>
-       
             </ul>
           </form>
         </div>
 
         <div class="col-md-9 row">
-       {  movies.map() <div class="col-md-4">
-            <div class="card">
-              <img src="..." class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-                <div> rating : 5 </div>
-                <div> category : action </div>
-                <div> created by : ahmed</div>
+          {movies.movies?.map((movie) => {
+            return (
+              <div class="col-md-4" key={movie._id}>
+                <div class="card">
+                  <img
+                    crossorigin="anonymous"
+                    src={movie.image}
+                    class="card-img-top"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">title :{movie.title}</h5>
+                    <p class="card-text"> description :{movie.description}</p>
+                    <div> rating : {movie.rate}</div>
+                    <div> category : {movie.movieCategoryName} </div>
+                    <div> created by : {movie.movieUser.name}</div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>}
-
+            );
+          })}
         </div>
       </div>
     </div>
