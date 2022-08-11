@@ -13,26 +13,15 @@ const QuoteForm = (props) => {
   const category = useRef();
   const [file, setFile] = useState();
   const [formShow, setFormShow] = useState(false);
+  // const [ newMovie, setNewMovie]=useState()
 
-  // const send = event => {
-
-  //   // Axios.post("https://httpbin.org/anything", data)
-  //   //   .then(res => console.log(res))
-  //   //   .catch(err => console.log(err));
-  // };
 
   const user = JSON.parse(localStorage.getItem("userInfo"))
     ? JSON.parse(localStorage.getItem("userInfo"))
     : { userData: "" };
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${user.userData.token}`,
-    },
-  };
+
 
   function submitFormHandler(event) {
-    event.preventDefault();
     if (!formShow) {
       setFormShow(true);
     } else {
@@ -49,25 +38,28 @@ const QuoteForm = (props) => {
 
       inputData.append("image", file);
 
-      const searchHandler = async () => {
+      const createMovie = async () => {
         try {
           const { data } = await axios.post(
             "http://localhost:8080/api/movie/new-move",
-          {title:enteredTitle
+            inputData,
+            {
+              headers: {
+                "Content-type": "application/json",
 
-            },
-            config
+                Authorization: `Bearer ${user.userData.token}`,
+              },
+            }
           );
-          console.log(data)
-
-          return { userData: data };
+          setFormShow(false)
+          window.location.reload()
+          return  data ;
         } catch (error) {
-          console.log(error)
           return { error: error.response.data };
         }
       };
 
-      searchHandler();
+      createMovie();
     }
   }
 
@@ -84,7 +76,7 @@ const QuoteForm = (props) => {
               <LoadingSpinner />
             </div>
           )}
-
+           <p> </p>
           {formShow && (
             <div>
               <div className={classes.control}>
@@ -130,7 +122,7 @@ const QuoteForm = (props) => {
           )}
           <div class="w-100 text-center">
             <button
-              type="submit"
+              type="button"
               class="btn btn-primary"
               onClick={submitFormHandler}
             >

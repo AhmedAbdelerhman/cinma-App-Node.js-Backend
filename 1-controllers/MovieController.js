@@ -8,14 +8,16 @@ const fs = require("fs");
 //@access           protected by token
 exports.createMovie = async (req, res) => {
 
-  //const { title, description, rate,  movieCategory } = req.body;
-  const { title, description, rate, movieCategory } = JSON.parse(req.body.data);
+  const { title, description, rate,  movieCategoryName } = req.body;
+  console.log(movieCategoryName)
+  // the commented line below for postman test 
+ // const { title, description, rate, movieCategory } = JSON.parse(req.body.data);
   if (!title || !description || !rate) {
     res.status(400).json({ message: "some data missed" });
     return;
   }
 
-  const isValidCategory = await Category.exists({ title: movieCategory });
+  const isValidCategory = await Category.exists({ title: movieCategoryName });
 
   try {
     if (isValidCategory) {
@@ -25,7 +27,7 @@ exports.createMovie = async (req, res) => {
         rate,
         image: `http://${req.headers.host}/${req.file.path.replace("\\", "/")}`,
 
-        movieCategoryName: movieCategory,
+        movieCategoryName: movieCategoryName,
         movieUser: req.user._id,
       });
 
@@ -59,7 +61,7 @@ let  rate =  req.query.rate||""
 
   }
   try {
-    const movies = await Movie.find(keyword).sort({ title: 1 });
+    const movies = await Movie.find(keyword).populate('movieUser', 'name').sort({ title: 1 });
 
     if (movies) {
       res.status(201).json({
@@ -129,7 +131,6 @@ exports.deleteMovie = async (req, res) => {
   })
     .then((movie) => {
       if (movie.movieUser.toString() === req.user._id.toString()) {
-        deleteImage(movie.image);
         Movie.findOneAndRemove({
           _id: movieId,
         }).then(() => {
@@ -148,11 +149,3 @@ exports.deleteMovie = async (req, res) => {
     });
 };
 
-// helper function
-const deleteImage = (filePath) => {
-  const imagePath = path.join(__dirname, "..", filePath);
-
-  fs.unlink(imagePath, (err) => {
-    if (err) return res.status(404).json({ error: "could not delete  image" });
-  });
-};

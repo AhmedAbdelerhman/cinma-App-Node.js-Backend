@@ -17,8 +17,6 @@ app.use(express.json());
 app.use(cors());
 const multer = require("multer");
 
-app.use(helmet());
-
 const URI_LINK = process.env.MONGODB_CONNECTION_LINK;
 
 const port = process.env.PORT || 8080;
@@ -39,7 +37,8 @@ const upload = multer({ storage: storage });
 
 app.use("/api/user", userRouter);
 
-app.use("/api/movie", upload.single("file"), movieRouter);
+
+app.use("/api/movie", upload.single("image"), movieRouter);
 app.use("/images", express.static(path.join(__dirname, "images\\")));
 
 app.use("/api/category", categoryRoutes);
