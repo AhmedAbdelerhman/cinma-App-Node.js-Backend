@@ -2,6 +2,7 @@
 create a new dashboard that enables the user to manage the movies and other admins.
  ## testing
   - use postman
+  - use FrontEnd
 
   ## How to setup
    - git clone https://github.com/AhmedAbdelerhman/StorexWeb-task
