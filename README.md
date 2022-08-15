@@ -1,4 +1,4 @@
-# StorexWeb-task
+# Movies-DashBord
 create a new dashboard that enables the user to manage the movies and other admins.
  ## testing
   - use postman
