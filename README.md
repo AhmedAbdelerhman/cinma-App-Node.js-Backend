@@ -5,7 +5,7 @@ create a new dashboard that enables the user to manage the movies and other admi
   - use FrontEnd
 
   ## How to setup
-   - git clone https://github.com/AhmedAbdelerhman/StorexWeb-task
+   - git clone https://github.com/AhmedAbdelerhman/cinma-App-Node.js-Backend
    - npm install
    - npm start || npm run dev
 
